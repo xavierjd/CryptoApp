@@ -54,7 +54,12 @@ import Foundation
 import Foundation
 
 
-struct CoinModel: Identifiable, Codable {
+struct CoinModel: Hashable, Identifiable, Codable {
+    static func == (lhs: CoinModel, rhs: CoinModel) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
+    
     let id, symbol, name: String
     let image: String
     let currentPrice: Double
@@ -112,6 +117,10 @@ struct CoinModel: Identifiable, Codable {
     
     var rank: Int {
         return Int(marketCapRank ?? 0)
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
     
 }

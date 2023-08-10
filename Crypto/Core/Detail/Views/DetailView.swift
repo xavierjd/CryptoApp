@@ -7,20 +7,6 @@
 
 import SwiftUI
 
-
-struct DetailLoadingView: View {
-    @Binding var coin: CoinModel?
-    
-    var body: some View {
-        ZStack{
-            if let coin = coin {
-                DetailView(coin: coin)
-            }
-        }
-    }
-    
-}
-
 struct DetailView: View {
     
     @StateObject private var vm: DetailViewModel
@@ -33,12 +19,12 @@ struct DetailView: View {
     private let spacing: CGFloat = 30
     
     init(coin: CoinModel){
+        print("\(coin.name)")
         self._vm = StateObject(wrappedValue: DetailViewModel(coin: coin))
     }
     
     var body: some View {
         ScrollView {
-            
             VStack {
                 ChartView(coin: vm.coin)
                     .padding(.vertical)
@@ -74,7 +60,7 @@ struct DetailView_Previews: PreviewProvider {
 }
 
 extension DetailView {
-    
+
     private var navigationBarTrailingItems: some View {
         HStack {
             Text(vm.coin.symbol.uppercased())
@@ -84,16 +70,16 @@ extension DetailView {
                 .frame(width: 25, height: 25)
         }
     }
-    
+
     private var overviewTitle: some View {
         Text("Overview")
             .font(.title)
             .bold()
             .foregroundColor(Color.theme.accent)
             .frame(maxWidth: .infinity, alignment: .leading)
-        
+
     }
-    
+
     private var additinalTitle: some View {
         Text("Additional Details")
             .font(.title)
@@ -101,7 +87,7 @@ extension DetailView {
             .foregroundColor(Color.theme.accent)
             .frame(maxWidth: .infinity, alignment: .leading)
     }
-    
+
     private var descriptionSection: some View{
         ZStack {
             if let coinDescription = vm.coinDescription,
@@ -126,10 +112,10 @@ extension DetailView {
 
                 }
             }
-                
+
         }
     }
-    
+
     private var overviewGrid: some View {
         LazyVGrid(
             columns: columns,
@@ -141,7 +127,7 @@ extension DetailView {
                 }
             }
     }
-    
+
     private var additionalGrid: some View{
         LazyVGrid(
             columns: columns,
@@ -153,14 +139,14 @@ extension DetailView {
                 }
             }
     }
-    
+
     private var websiteSection: some View {
         VStack(alignment: .leading, spacing: 20.0) {
             if let websiteString = vm.websiteURL,
                 let url = URL(string: websiteString) {
                 Link("Website", destination: url)
             }
-            
+
             if let redditString = vm.redditURL,
                let url = URL(string: redditString) {
                 Link("Reddit", destination: url)
